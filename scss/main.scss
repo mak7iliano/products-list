@@ -54,6 +54,16 @@ input[type=number] {
     }
 }
 
+select {
+    display: block;
+    width: 100%;
+    height: 30px;
+    border-radius: $radius;
+    background-color: #fff;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    box-sizing: border-box;
+}
+
 .btn {
     display: inline-block;
     height: 30px;
@@ -245,6 +255,13 @@ a {
     display: flex;
     align-items: center;
     justify-content: center;
+    opacity: 1;
+    transition-duration: 0.5s;
+
+    &.hidden {
+        opacity: 0;
+        z-index: -1;
+    }
 
     .body {
         background-color: #fff;
@@ -252,6 +269,7 @@ a {
         padding: $space;
         width: 300px;
         position: relative;
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
     }
 
     .caption {
@@ -297,6 +315,70 @@ a {
         &:hover {
             background-color: $colorImportant;
             color: #fff;
+        }
+    }
+}
+
+.filter {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 280px;
+    height: 100%;
+    padding: $space;
+    box-sizing: border-box;
+    background-color: #fff;
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+    transition-duration: 0.5s; 
+
+    &:before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        width: 2000px;
+        height: 100%;
+        transition-duration: 0.5s; 
+        transition-property: background-color;
+    }
+
+    &.hidden {
+        transform: translateX(-320px);
+
+        &:before {
+            width: 0;
+            background-color: transparent;
+        }
+    }
+
+    .close {
+        position: absolute;
+        top: $space;
+        right: $space;
+        height: 22px;
+        width: 22px;
+        padding: 0;
+
+        &:hover {
+            background-color: $colorImportant;
+            color: #fff;
+        }
+    }
+
+    .caption {
+        line-height: 22px;
+        margin: 0 0 $space 0;
+        text-transform: uppercase;
+        font-weight: bold;
+        color: $colorBrand;
+    }
+
+    .element {
+        margin: 0 0 $space 0;
+
+        &:last-child {
+            margin: 0;
         }
     }
 }

@@ -37,7 +37,7 @@ let products = [{
 }, {
     image: 'https://i8.rozetka.ua/goods/16041151/copy_samsung_sm_a515fzwusek_5e04c47d16006_images_16041151897.jpg',
     title: 'Мобильный телефон Samsung Galaxy A51 6/128GB White (SM-A515FZWWSEK)',
-    price: '8 499',
+    price: 8499,
     availability: true,
     tags: [],
     id: 6
@@ -147,10 +147,22 @@ class Products {
         this.data.push(item);
     }
 
-    print() {
+    set filterPrice(val) {
+        this.data.sort(function (a, b) {
+            if (val === 'low') {
+                return a.price - b.price;
+            } else {
+                return b.price - a.price;
+            }
+        });
+    }
+
+    print(showHidden = true) {
         for (let item of this.data) {
             const productItem = new Product(item);
-            productItem.print();
+            if (productItem.availability || (!productItem.availability && showHidden)) {
+                productItem.print();
+            }
         }
         let result = `<div class="cell empty"></div><div class="cell empty"></div>`;
         document.getElementById('product-list').innerHTML += result;
@@ -184,9 +196,29 @@ function addProduct(form) {
     productList.addItem = newProduct;
     productList.clearData();
     productList.print();
+
+    blockAppearance('product-add', 'hide');
 }
 
-// product delete
-// product add
+function blockAppearance(id, type) {
+    const block = document.getElementById(id);
+    if (type === 'show') {
+        block.classList.remove('hidden');
+    } else {
+        block.classList.add('hidden');
+    }
+}
+
+function filterPrice(filter) {
+    productList.filterPrice = filter.value;
+    productList.clearData();
+    productList.print();
+}
+
+function filterAvailable(filter) {
+    productList.clearData();
+    productList.print(filter.checked);
+}
+
 // filter price sort
 // filter avail

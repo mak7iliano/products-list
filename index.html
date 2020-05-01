@@ -17,8 +17,9 @@
             <div class="header-wrapper">
                 <div class="logo">Products <span class="count" id="product-total"></span></div>
                 <div class="controls">
-                    <button class="btn" title="Filter"><i class="fas fa-filter"></i></button>
-                    <button class="btn">Add product</button>
+                    <button class="btn" title="Filter" onclick="blockAppearance('filter', 'show')"><i
+                            class="fas fa-filter"></i></button>
+                    <button class="btn" onclick="blockAppearance('product-add', 'show')">Add product</button>
                 </div>
             </div>
         </div>
@@ -27,9 +28,10 @@
         <div class="product-grid" id="product-list"></div>
     </div>
 
-    <div class="modal">
+    <div class="modal hidden" id="product-add">
         <div class="body">
-            <button class="btn close"><i class="fas fa-remove"></i></button>
+            <button class="btn close" onclick="blockAppearance('product-add', 'hide')"><i
+                    class="fas fa-remove"></i></button>
             <div class="caption">Add product</div>
             <form onsubmit="addProduct(this); return false;">
                 <div class="element">
@@ -55,6 +57,24 @@
                     <button class="btn confirm">Confirm</button>
                 </div>
             </form>
+        </div>
+    </div>
+
+    <div class="filter hidden" id="filter">
+        <button class="btn close" onclick="blockAppearance('filter', 'hide')"><i class="fas fa-remove"></i></button>
+        <div class="caption">Filter</div>
+        <div class="element">
+            <select onchange="filterPrice(this)">
+                <option value="">Select price filter</option>
+                <option value="low">Price from low to high</option>
+                <option value="high">Price from high to low</option>
+            </select>
+        </div>
+        <div class="element">
+            <label>
+                <input type="checkbox" onchange="filterAvailable(this)" checked>
+                Show not available
+            </label>
         </div>
     </div>
 
