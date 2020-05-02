@@ -17,9 +17,10 @@
             <div class="header-wrapper">
                 <div class="logo">Products <span class="count" id="product-total"></span></div>
                 <div class="controls">
-                    <button class="btn" title="Favourite" onclick="blockAppearance('favourite', 'show')">
+                    <button class="btn" title="Favourite"
+                        onclick="hasFavourites() && blockAppearance('favourite', 'show')">
                         <i class="fas fa-heart"></i>
-                        <span class="count"></span>
+                        <span class="count" id="favourite-count"></span>
                     </button>
                     <button class="btn" title="Filter" onclick="blockAppearance('filter', 'show')"><i
                             class="fas fa-filter"></i></button>
@@ -64,7 +65,7 @@
         </div>
     </div>
 
-    <div class="modal " id="favourite">
+    <div class="modal hidden" id="favourite">
         <div class="body">
             <button class="btn close" onclick="blockAppearance('favourite', 'hide')"><i
                     class="fas fa-remove"></i></button>
@@ -88,6 +89,12 @@
                 <input type="checkbox" onchange="filterAvailable(this)" checked>
                 Show not available
             </label>
+        </div>
+        <div class="element">
+            <div class="button-wrapper">
+                <button class="btn active" onclick="changeCurrency('uah', this)">UAH</button>
+                <button class="btn" onclick="changeCurrency('usd', this)">USD</button>
+            </div>
         </div>
     </div>
 

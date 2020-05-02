@@ -93,6 +93,8 @@ let products = [{
 
 let favouriteData = [];
 
+const course = 28;
+
 class Product {
     constructor(data) {
         this.image = data.image;
@@ -102,17 +104,19 @@ class Product {
         this.tags = data.tags;
         this.id = data.id;
     }
-    print() {
-        let result = `<div class="cell"><div class="product-thumb">`;
+    print(currency) {
+        const currencySymbol = currency === 'usd' ? '$' : '₴';
+        const price = currency === 'usd' ? Math.floor(this.price / course) : this.price;
+        let result = `<div class="cell"><div class="product-thumb" data-id="${this.id}">`;
 
         result += `<div class="image">`;
         result += `<img src="${this.image || 'images/no-image.jpg'}" alt="${this.title}">`;
-        result += `<i class="like fas fa-heart" onclick="addToFavourite(${this.id}, this)"></i>`;
+        result += `<i class="like fas fa-heart" onclick="toggleFavourite(${this.id}, this)"></i>`;
         result += `</div>`;
 
         result += `<div class="title">${this.title}</div>`;
         result += `<div class="group-wrapper">`;
-        result += `<div class="price">${this.price} <span>₴</span></div>`;
+        result += `<div class="price">${price} <span class="currency">${currencySymbol}</span></div>`;
         if (this.availability) {
             result += `<div class="availability">Есть в наличии</div>`;
         } else {
@@ -165,11 +169,11 @@ class Products {
         });
     }
 
-    print(showHidden = true) {
+    print(showHidden = true, currency) {
         for (let item of this.data) {
             const productItem = new Product(item);
             if (productItem.availability || (!productItem.availability && showHidden)) {
-                productItem.print();
+                productItem.print(currency);
             }
         }
         let result = `<div class="cell empty"></div><div class="cell empty"></div>`;
@@ -190,7 +194,10 @@ class Favourites {
     }
     set addToFavourite(item) {
         this.data.push(item);
-        console.log(this.data);
+    }
+    set removeFavourite(item) {
+        const itemPostion = this.data.indexOf(item);
+        this.data.splice(itemPostion, 1);
     }
     print() {
         let result = ``;
@@ -202,17 +209,20 @@ class Favourites {
             result += `<div class="data">`;
             result += `<div class="name">${item.title}</div>`;
             result += `<div class="price">${item.price} ₴</div>`;
-            result += `<button class="btn remove"><i class="fas fa-remove"></i></button>`;
+            result += `<button class="btn remove" onclick="removeFromFavouriteList(${item.id})"><i class="fas fa-remove"></i></button>`;
             result += `</div>`;
             result += `</div>`;
         }
 
         document.getElementById('favourite-list').innerHTML += result;
+        document.getElementById('favourite-count').innerHTML = this.data.length;
+    }
+    clearData() {
+        document.getElementById('favourite-list').innerHTML = '';
     }
 }
 
 const favouriteList = new Favourites(favouriteData);
-console.log(favouriteList);
 
 function removeProduct(id) {
     if (confirm('Are you sure?')) {
@@ -258,18 +268,60 @@ function filterAvailable(filter) {
     productList.print(filter.checked);
 }
 
-function addToFavourite(id, button) {
-    if (button.classList.contains('active')) {
-        // remove from favourite
-    } else {
-        // add to favourite
-        for (let product of products) {
-            if (product.id === id) {
+function toggleFavourite(id, button) {
+    for (let product of products) {
+        if (product.id === id) {
+            if (button.classList.contains('active')) {
+                // remove from favourite
+                favouriteList.removeFavourite = product;
+            } else {
+                // add to favourite
                 favouriteList.addToFavourite = product;
-                favouriteList.print();
             }
         }
     }
-    button.classList.toggle('active');
 
+    button.classList.toggle('active');
+    favouriteList.clearData();
+    favouriteList.print();
 }
+
+function hasFavourites() {
+    return !!favouriteList.data.length;
+}
+
+function removeFromFavouriteList(id) {
+    for (let product of products) {
+        if (product.id === id) {
+            favouriteList.removeFavourite = product;
+        }
+    }
+
+    const list = document.querySelectorAll('#product-list .product-thumb');
+    for (let i = 0; i < list.length; i++) {
+        if (list[i].getAttribute('data-id') == id) {
+            list[i].querySelector('.like').classList.remove('active');
+        }
+    }
+
+    favouriteList.clearData();
+    favouriteList.print();
+
+    if (!favouriteList.data.length) {
+        blockAppearance('favourite', 'hide');
+    }
+}
+
+function changeCurrency(currency, button) {
+    productList.clearData();
+    productList.print(true, currency);
+
+    for (let i = 0; i < button.parentNode.children.length; i++) {
+        button.parentNode.children[i].classList.remove('active');
+    }
+    button.classList.add('active');
+}
+
+// document.addEventListener('contextmenu', function (event) {
+//     event.preventDefault();
+// });
