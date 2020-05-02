@@ -91,6 +91,8 @@ let products = [{
     id: 12
 }];
 
+let favouriteData = [];
+
 class Product {
     constructor(data) {
         this.image = data.image;
@@ -102,7 +104,12 @@ class Product {
     }
     print() {
         let result = `<div class="cell"><div class="product-thumb">`;
-        result += `<div class="image"><img src="${this.image || 'images/no-image.jpg'}" alt="${this.title}"></div>`;
+
+        result += `<div class="image">`;
+        result += `<img src="${this.image || 'images/no-image.jpg'}" alt="${this.title}">`;
+        result += `<i class="like fas fa-heart" onclick="addToFavourite(${this.id}, this)"></i>`;
+        result += `</div>`;
+
         result += `<div class="title">${this.title}</div>`;
         result += `<div class="group-wrapper">`;
         result += `<div class="price">${this.price} <span>₴</span></div>`;
@@ -122,6 +129,7 @@ class Product {
         }
 
         result += `<button class="btn remove" title="Remove" onclick="removeProduct(${this.id})"><i class="fas fa-remove"></i></button>`;
+
 
         result += `</div></div>`;
         document.getElementById('product-list').innerHTML += result;
@@ -176,6 +184,36 @@ class Products {
 const productList = new Products(products);
 productList.print();
 
+class Favourites {
+    constructor(_data) {
+        this.data = _data;
+    }
+    set addToFavourite(item) {
+        this.data.push(item);
+        console.log(this.data);
+    }
+    print() {
+        let result = ``;
+        for (let item of this.data) {
+            result += `<div class="favourite-item">`;
+            result += `<div class="img">`;
+            result += `<img src="${item.image || 'images/no-image.jpg'}" alt="${item.title}">`;
+            result += `</div>`;
+            result += `<div class="data">`;
+            result += `<div class="name">${item.title}</div>`;
+            result += `<div class="price">${item.price} ₴</div>`;
+            result += `<button class="btn remove"><i class="fas fa-remove"></i></button>`;
+            result += `</div>`;
+            result += `</div>`;
+        }
+
+        document.getElementById('favourite-list').innerHTML += result;
+    }
+}
+
+const favouriteList = new Favourites(favouriteData);
+console.log(favouriteList);
+
 function removeProduct(id) {
     if (confirm('Are you sure?')) {
         productList.removeItem = id;
@@ -220,5 +258,18 @@ function filterAvailable(filter) {
     productList.print(filter.checked);
 }
 
-// filter price sort
-// filter avail
+function addToFavourite(id, button) {
+    if (button.classList.contains('active')) {
+        // remove from favourite
+    } else {
+        // add to favourite
+        for (let product of products) {
+            if (product.id === id) {
+                favouriteList.addToFavourite = product;
+                favouriteList.print();
+            }
+        }
+    }
+    button.classList.toggle('active');
+
+}

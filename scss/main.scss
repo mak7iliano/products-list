@@ -80,6 +80,12 @@ select {
     &:hover {
         background-color: #e7e7e7;
     }
+
+    .count {
+        &:empty {
+            display: none;
+        }
+    }
 }
 
 a {
@@ -161,6 +167,10 @@ a {
         .remove {
             opacity: 1;
         }
+
+        .like {
+            transform: translate(-50%, -50%) scale(1);
+        }
     }
     
     .image {
@@ -170,6 +180,7 @@ a {
         align-items: center;
         background-color: #fff;
         border-radius: $radius;
+        position: relative;
 
         img {
             display: block;
@@ -240,6 +251,27 @@ a {
         &:hover {
             background-color: $colorImportant;
             color: #fff;
+        }
+    }
+
+    .like {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%) scale(0);
+        font-size: 36px;
+        color: #fff;
+        text-shadow: 0 0 20px #000;
+        transition-duration: 0.3s;
+        cursor: pointer;
+
+        &:hover {
+            color: rgb(226, 223, 223);
+        }
+
+        &.active {
+            color: $colorImportant;
+            transform: translate(-50%, -50%) scale(1);
         }
     }
 }
@@ -380,5 +412,53 @@ a {
         &:last-child {
             margin: 0;
         }
+    }
+}
+
+.favourite-item {
+    border: 1px solid $colorBorder;
+    border-radius: $radius;
+    padding: $space / 2;
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin: 0 0 ($space / 2) 0;
+
+    &:last-child {
+        margin: 0;
+    }
+
+    .img {
+        width: 50px;
+
+        img {
+            max-width: 50px;
+            max-height: 50px;
+            display: block;
+            margin: 0 auto;
+        }
+    }
+
+    .data {
+        flex-grow: 1;
+    }
+
+    .remove {
+        position: absolute;
+        top: $space / 2;
+        right: $space / 2;
+        height: 22px;
+        width: 22px;
+        padding: 0;
+
+        &:hover {
+            background-color: $colorImportant;
+            color: #fff;
+        }
+    }
+
+    .name {
+        color: $colorBrand;
+        text-transform: uppercase;
     }
 }
