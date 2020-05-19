@@ -38,6 +38,7 @@ input::-moz-focus-inner {
 }
 
 input[type=text],
+input[type=password],
 input[type=number] {
     display: block;
     width: 100%;
@@ -474,4 +475,9 @@ a {
         text-transform: uppercase;
         margin: 0 30px 0 0;
     }
+}
+
+.block-auth {
+    background-color: darken($colorBrand , 10%);
+    padding: $space 0;
 }

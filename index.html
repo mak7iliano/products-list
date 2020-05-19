@@ -12,6 +12,9 @@
 </head>
 
 <body>
+    <div class="block-auth">
+        <div class="mainer" id="auth-btns"></div>
+    </div>
     <header class="header">
         <div class="mainer">
             <div class="header-wrapper">
@@ -57,6 +60,51 @@
                         <input type="checkbox" name="availability">
                         Avail
                     </label>
+                </div>
+                <div class="element">
+                    <button class="btn confirm">Confirm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal hidden" id="registration">
+        <div class="body">
+            <button class="btn close" onclick="blockAppearance('registration', 'hide')"><i
+                    class="fas fa-remove"></i></button>
+            <div class="caption">Registartion</div>
+            <form onsubmit="registerForm(this); return false;">
+                <div class="element">
+                    <div class="title">Login</div>
+                    <input type="text" minlength="3" name="login" placeholder="Enter login" required>
+                </div>
+                <div class="element">
+                    <div class="title">Password</div>
+                    <input type="password" name="password" placeholder="Enter password" required>
+                </div>
+                <div class="element">
+                    <div class="title">Confirm Password</div>
+                    <input type="password" name="passwordConfirm" placeholder="Enter password" required>
+                </div>
+                <div class="element">
+                    <button class="btn confirm">Confirm</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <div class="modal hidden" id="login">
+        <div class="body">
+            <button class="btn close" onclick="blockAppearance('login', 'hide')"><i class="fas fa-remove"></i></button>
+            <div class="caption">Login</div>
+            <form onsubmit="loginForm(this); return false;">
+                <div class="element">
+                    <div class="title">Login</div>
+                    <input type="text" minlength="3" name="login" placeholder="Enter login" required>
+                </div>
+                <div class="element">
+                    <div class="title">Password</div>
+                    <input type="password" name="password" placeholder="Enter password" required>
                 </div>
                 <div class="element">
                     <button class="btn confirm">Confirm</button>

@@ -325,3 +325,67 @@ function changeCurrency(currency, button) {
 // document.addEventListener('contextmenu', function (event) {
 //     event.preventDefault();
 // });
+
+function logout() {
+    localStorage.removeItem('login');
+    loginMenu();
+}
+
+function loginMenu() {
+    let authBtns;
+    const login = localStorage.getItem('login');
+    if (login) {
+        authBtns = `<button class="btn" title="Client cabinet"><i class="fas fa-user"></i> Hi, ${login}!</button> <button class="btn" title="Logout" onclick="logout()"><i class="fas fa-key"></i> Logout</button>`;
+    } else {
+        authBtns = `<button class="btn" title="Login" onclick="blockAppearance('login', 'show')"><i class="fas fa-key"></i> Login</button> <button class="btn" title="Login" onclick="blockAppearance('registration', 'show')"><i class="fas fa-key"></i> Registration</button>`;
+    }
+    document.getElementById('auth-btns').innerHTML = authBtns;
+}
+
+function loginForm(form) {
+    const login = form.querySelector("[name = 'login']").value;
+    const pass = form.querySelector("[name = 'password']").value;
+    let registerList = JSON.parse(localStorage.getItem('regList'));
+    if (registerList && registerList.length) {
+        let error = true;
+        for (let user of registerList) {
+            if (user.login === login && user.password === pass) {
+                localStorage.setItem('login', login);
+                loginMenu();
+                blockAppearance('login', 'hide');
+                error = false;
+                break;
+            }
+        }
+        if (error) {
+            alert('Wrong login or password!');
+        }
+    }
+}
+
+function registerForm(form) {
+    const login = form.querySelector("[name = 'login']").value;
+    const pass = form.querySelector("[name = 'password']").value;
+    const passConfirm = form.querySelector("[name = 'passwordConfirm']").value;
+    const regData = {
+        login: login,
+        password: pass
+    }
+
+    let registerList = localStorage.getItem('regList');
+
+    if (pass === passConfirm) {
+        if (registerList) {
+            let list = JSON.parse(registerList);
+            list.push(regData);
+            localStorage.setItem('regList', JSON.stringify(list));
+        } else {
+            localStorage.setItem('regList', JSON.stringify([regData]));
+        }
+        blockAppearance('registration', 'hide');
+    } else {
+        alert('Password confirm is not correct!');
+    }
+}
+
+loginMenu();
